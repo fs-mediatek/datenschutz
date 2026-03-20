@@ -143,17 +143,17 @@
     <pre><span class="comment"># In gew&uuml;nschtes Verzeichnis wechseln</span>
 <span class="cmd">cd /opt</span>
 
-<span class="comment"># Repository klonen (URL anpassen!)</span>
+<span class="comment"># Repository klonen</span>
 <span class="cmd">sudo git clone https://github.com/fs-mediatek/datenschutz.git</span>
 
 <span class="comment"># Berechtigungen setzen</span>
-<span class="cmd">sudo chown -R $USER:$USER /opt/datenschutz-tool</span>
+<span class="cmd">sudo chown -R $USER:$USER /opt/datenschutz</span>
 
 <span class="comment"># In das Verzeichnis wechseln</span>
-<span class="cmd">cd /opt/datenschutz-tool</span></pre>
+<span class="cmd">cd /opt/datenschutz</span></pre>
 
     <div class="warn-box">
-      <p><strong>Hinweis:</strong> Die Repository-URL <code>https://github.com/fs-mediatek/datenschutz.git</code> muss durch die tats&auml;chliche URL ersetzt werden.</p>
+      <p><strong>Hinweis:</strong> Das Repository wird als <code>/opt/datenschutz</code> geklont. Alle weiteren Befehle beziehen sich auf dieses Verzeichnis.</p>
     </div>
   </div>
 
@@ -164,7 +164,7 @@
     <h3>Option A: Automatischer Installer (empfohlen)</h3>
     <pre><span class="comment"># Installer-Skript ausf&uuml;hrbar machen und starten</span>
 <span class="cmd">chmod +x github-install.sh</span>
-<span class="cmd">./github-install.sh --dir /opt/datenschutz-tool</span></pre>
+<span class="cmd">./github-install.sh --dir /opt/datenschutz</span></pre>
 
     <p>Der Installer f&uuml;hrt automatisch alle Schritte aus:</p>
     <ol>
@@ -234,7 +234,7 @@ After=network.target
 <span class="comment">[Service]</span>
 Type=simple
 User=<span class="cmd">ihr-benutzername</span>
-WorkingDirectory=<span class="cmd">/opt/datenschutz-tool</span>
+WorkingDirectory=<span class="cmd">/opt/datenschutz</span>
 ExecStart=/usr/bin/npx next start -p 3000
 Restart=on-failure
 RestartSec=5
@@ -323,7 +323,7 @@ WantedBy=multi-user.target</pre>
   <h2><span class="num">11</span> Update durchf&uuml;hren</h2>
 
   <div class="card">
-    <pre><span class="cmd">cd /opt/datenschutz-tool</span>
+    <pre><span class="cmd">cd /opt/datenschutz</span>
 
 <span class="comment"># Neueste Version holen</span>
 <span class="cmd">git pull</span>
@@ -347,12 +347,12 @@ WantedBy=multi-user.target</pre>
     <p>Die gesamte Datenbank liegt in einer einzigen SQLite-Datei:</p>
 
     <pre><span class="comment"># Datenbank sichern</span>
-<span class="cmd">cp /opt/datenschutz-tool/dev.db /opt/datenschutz-tool/backup_$(date +%Y%m%d).db</span>
+<span class="cmd">cp /opt/datenschutz/dev.db /opt/datenschutz/backup_$(date +%Y%m%d).db</span>
 
 <span class="comment"># Oder als Cronjob (t&auml;glich um 2:00 Uhr)</span>
 <span class="cmd">sudo crontab -e</span>
 <span class="output"># Folgende Zeile hinzuf&uuml;gen:</span>
-0 2 * * * cp /opt/datenschutz-tool/dev.db /opt/backups/datenschutz_$(date +\%Y\%m\%d).db</pre>
+0 2 * * * cp /opt/datenschutz/dev.db /opt/backups/datenschutz_$(date +\%Y\%m\%d).db</pre>
 
     <div class="warn-box">
       <p><strong>Wichtig:</strong> Die Datei <code>dev.db</code> enth&auml;lt alle Unternehmensdaten, Verarbeitungsverzeichnisse und Datenlandkarten. Regelm&auml;&szlig;ige Backups sind dringend empfohlen!</p>
@@ -371,7 +371,7 @@ WantedBy=multi-user.target</pre>
       </tr>
       <tr>
         <td>Permission denied bei npm install</td>
-        <td><code>sudo chown -R $USER:$USER /opt/datenschutz-tool</code></td>
+        <td><code>sudo chown -R $USER:$USER /opt/datenschutz</code></td>
       </tr>
       <tr>
         <td>Prisma-Fehler nach Update</td>
