@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Datenschutz-Tool – Installationsanleitung Ubuntu</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { font-family: 'Segoe UI', system-ui, -apple-system, sans-serif; background: #f1f5f9; color: #1e293b; line-height: 1.7; }
+  .container { max-width: 860px; margin: 0 auto; padding: 40px 24px; }
+  h1 { font-size: 28px; margin-bottom: 8px; color: #0f172a; }
+  h1 span { color: #2563eb; }
+  .subtitle { color: #64748b; font-size: 15px; margin-bottom: 40px; }
+  h2 { font-size: 20px; color: #0f172a; margin: 36px 0 16px; padding-bottom: 8px; border-bottom: 2px solid #e2e8f0; }
+  h2 .num { display: inline-flex; align-items: center; justify-content: center; width: 32px; height: 32px; background: #2563eb; color: #fff; border-radius: 50%; font-size: 15px; margin-right: 10px; }
+  h3 { font-size: 16px; color: #334155; margin: 20px 0 8px; }
+  p { margin: 8px 0; color: #475569; }
+  ul, ol { margin: 8px 0 8px 24px; color: #475569; }
+  li { margin: 4px 0; }
+
+  .card { background: #fff; border-radius: 12px; padding: 24px; margin: 16px 0; box-shadow: 0 1px 3px rgba(0,0,0,0.08); border: 1px solid #e2e8f0; }
+  .prereq { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  .prereq-item { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 14px 16px; }
+  .prereq-item strong { display: block; color: #0f172a; font-size: 14px; margin-bottom: 2px; }
+  .prereq-item span { color: #64748b; font-size: 13px; }
+
+  pre { background: #1e293b; color: #e2e8f0; border-radius: 8px; padding: 16px 20px; overflow-x: auto; font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; font-size: 13.5px; line-height: 1.8; margin: 12px 0; position: relative; }
+  pre .comment { color: #64748b; }
+  pre .cmd { color: #38bdf8; }
+  pre .output { color: #94a3b8; font-style: italic; }
+  code { background: #f1f5f9; color: #dc2626; padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace; font-size: 13px; }
+
+  .info-box { background: #eff6ff; border-left: 4px solid #2563eb; border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 16px 0; }
+  .info-box strong { color: #1e40af; }
+  .info-box p { color: #1e40af; margin: 0; }
+  .warn-box { background: #fefce8; border-left: 4px solid #eab308; border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 16px 0; }
+  .warn-box strong { color: #854d0e; }
+  .warn-box p { color: #854d0e; margin: 0; }
+  .success-box { background: #f0fdf4; border-left: 4px solid #22c55e; border-radius: 0 8px 8px 0; padding: 14px 18px; margin: 16px 0; }
+  .success-box strong { color: #166534; }
+  .success-box p { color: #166534; margin: 0; }
+
+  table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid #e2e8f0; font-size: 14px; }
+  th { background: #f8fafc; color: #475569; font-weight: 600; }
+  td code { font-size: 12.5px; }
+
+  .footer { text-align: center; color: #94a3b8; font-size: 13px; margin-top: 48px; padding-top: 24px; border-top: 1px solid #e2e8f0; }
+
+  @media print {
+    body { background: #fff; }
+    .card { box-shadow: none; border: 1px solid #ccc; }
+    pre { background: #f3f4f6; color: #1e293b; border: 1px solid #ccc; }
+    pre .comment { color: #6b7280; }
+    pre .cmd { color: #1d4ed8; }
+  }
+  @media (max-width: 600px) {
+    .prereq { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <h1>&#128737; Datenschutz-Tool &ndash; <span>Installationsanleitung</span></h1>
+  <p class="subtitle">DSGVO Compliance Manager &middot; Ubuntu Server / Desktop &middot; Stand: M&auml;rz 2026</p>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">1</span> Voraussetzungen</h2>
+
+  <div class="card">
+    <div class="prereq">
+      <div class="prereq-item">
+        <strong>Betriebssystem</strong>
+        <span>Ubuntu 22.04 LTS oder 24.04 LTS</span>
+      </div>
+      <div class="prereq-item">
+        <strong>Node.js</strong>
+        <span>Version 18 oder h&ouml;her (empfohlen: 20 LTS)</span>
+      </div>
+      <div class="prereq-item">
+        <strong>Git</strong>
+        <span>Zum Klonen des Repositories</span>
+      </div>
+      <div class="prereq-item">
+        <strong>Speicherplatz</strong>
+        <span>Min. 500 MB (inkl. node_modules + Build)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">2</span> System aktualisieren</h2>
+
+  <div class="card">
+    <pre><span class="comment"># System-Pakete aktualisieren</span>
+<span class="cmd">sudo apt update && sudo apt upgrade -y</span></pre>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">3</span> Node.js 20 LTS installieren</h2>
+
+  <div class="card">
+    <p>Das offizielle NodeSource-Repository verwenden:</p>
+
+    <pre><span class="comment"># NodeSource-Repository hinzuf&uuml;gen</span>
+<span class="cmd">curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -</span>
+
+<span class="comment"># Node.js installieren</span>
+<span class="cmd">sudo apt install -y nodejs</span>
+
+<span class="comment"># Version pr&uuml;fen</span>
+<span class="cmd">node --version</span>
+<span class="output"># Erwartete Ausgabe: v20.x.x</span>
+
+<span class="cmd">npm --version</span>
+<span class="output"># Erwartete Ausgabe: 10.x.x</span></pre>
+
+    <div class="info-box">
+      <p><strong>Alternativ:</strong> Falls Node.js bereits &uuml;ber <code>snap</code> oder <code>nvm</code> installiert ist, reicht Version 18+.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">4</span> Git installieren</h2>
+
+  <div class="card">
+    <pre><span class="cmd">sudo apt install -y git</span>
+
+<span class="comment"># Pr&uuml;fen</span>
+<span class="cmd">git --version</span>
+<span class="output"># Erwartete Ausgabe: git version 2.x.x</span></pre>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">5</span> Repository klonen</h2>
+
+  <div class="card">
+    <pre><span class="comment"># In gew&uuml;nschtes Verzeichnis wechseln</span>
+<span class="cmd">cd /opt</span>
+
+<span class="comment"># Repository klonen (URL anpassen!)</span>
+<span class="cmd">sudo git clone https://github.com/BENUTZERNAME/datenschutz-tool.git</span>
+
+<span class="comment"># Berechtigungen setzen</span>
+<span class="cmd">sudo chown -R $USER:$USER /opt/datenschutz-tool</span>
+
+<span class="comment"># In das Verzeichnis wechseln</span>
+<span class="cmd">cd /opt/datenschutz-tool</span></pre>
+
+    <div class="warn-box">
+      <p><strong>Hinweis:</strong> Die Repository-URL <code>https://github.com/BENUTZERNAME/datenschutz-tool.git</code> muss durch die tats&auml;chliche URL ersetzt werden.</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">6</span> Automatische Installation</h2>
+
+  <div class="card">
+    <h3>Option A: Automatischer Installer (empfohlen)</h3>
+    <pre><span class="comment"># Installer-Skript ausf&uuml;hrbar machen und starten</span>
+<span class="cmd">chmod +x github-install.sh</span>
+<span class="cmd">./github-install.sh --dir /opt/datenschutz-tool</span></pre>
+
+    <p>Der Installer f&uuml;hrt automatisch alle Schritte aus:</p>
+    <ol>
+      <li>Pr&uuml;ft Node.js und Git</li>
+      <li>Installiert npm-Abh&auml;ngigkeiten</li>
+      <li>Fragt Port und URL ab</li>
+      <li>Richtet die SQLite-Datenbank ein</li>
+      <li>L&auml;dt DSGVO-Stammdaten (Rechtsgrundlagen, Datenkategorien, TOMs)</li>
+      <li>Erstellt den Produktions-Build</li>
+      <li>Bietet Systemd-Service-Einrichtung an</li>
+    </ol>
+
+    <h3 style="margin-top: 24px;">Option B: Manuelle Installation</h3>
+    <pre><span class="comment"># 1. Abh&auml;ngigkeiten installieren</span>
+<span class="cmd">npm install</span>
+
+<span class="comment"># 2. Umgebungsdatei erstellen</span>
+<span class="cmd">cp .env.example .env</span>
+
+<span class="comment"># 3. Prisma Client generieren</span>
+<span class="cmd">npx prisma generate</span>
+
+<span class="comment"># 4. Datenbank-Migrationen ausf&uuml;hren</span>
+<span class="cmd">npx prisma migrate deploy</span>
+
+<span class="comment"># 5. DSGVO-Stammdaten laden (optional, aber empfohlen)</span>
+<span class="cmd">npx tsx prisma/seed.ts</span>
+
+<span class="comment"># 6. Produktions-Build erstellen</span>
+<span class="cmd">npx next build</span></pre>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">7</span> Anwendung starten</h2>
+
+  <div class="card">
+    <h3>Manuell starten (Vordergrund)</h3>
+    <pre><span class="cmd">npx next start -p 3000</span>
+
+<span class="output"># Ausgabe:</span>
+<span class="output">#   &#9654; Ready on http://localhost:3000</span></pre>
+
+    <h3>Mit Start-Skript (Auto-Restart)</h3>
+    <pre><span class="cmd">chmod +x start.sh</span>
+<span class="cmd">./start.sh</span></pre>
+
+    <div class="success-box">
+      <p><strong>Geschafft!</strong> Die Anwendung ist jetzt erreichbar unter <code>http://SERVER-IP:3000</code></p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">8</span> Systemd-Service einrichten (Produktionsbetrieb)</h2>
+
+  <div class="card">
+    <p>F&uuml;r den Dauerbetrieb empfiehlt sich ein Systemd-Service, der die Anwendung automatisch startet und bei Abst&uuml;rzen neu startet.</p>
+
+    <pre><span class="comment"># Service-Datei erstellen</span>
+<span class="cmd">sudo nano /etc/systemd/system/datenschutz-tool.service</span></pre>
+
+    <p>Folgenden Inhalt einf&uuml;gen:</p>
+
+    <pre><span class="comment">[Unit]</span>
+Description=Datenschutz-Tool DSGVO Compliance
+After=network.target
+
+<span class="comment">[Service]</span>
+Type=simple
+User=<span class="cmd">ihr-benutzername</span>
+WorkingDirectory=<span class="cmd">/opt/datenschutz-tool</span>
+ExecStart=/usr/bin/npx next start -p 3000
+Restart=on-failure
+RestartSec=5
+Environment=NODE_ENV=production
+
+<span class="comment">[Install]</span>
+WantedBy=multi-user.target</pre>
+
+    <pre><span class="comment"># Service aktivieren und starten</span>
+<span class="cmd">sudo systemctl daemon-reload</span>
+<span class="cmd">sudo systemctl enable datenschutz-tool</span>
+<span class="cmd">sudo systemctl start datenschutz-tool</span>
+
+<span class="comment"># Status pr&uuml;fen</span>
+<span class="cmd">sudo systemctl status datenschutz-tool</span></pre>
+
+    <h3>N&uuml;tzliche Service-Befehle</h3>
+    <table>
+      <tr><th>Befehl</th><th>Beschreibung</th></tr>
+      <tr><td><code>sudo systemctl start datenschutz-tool</code></td><td>Service starten</td></tr>
+      <tr><td><code>sudo systemctl stop datenschutz-tool</code></td><td>Service stoppen</td></tr>
+      <tr><td><code>sudo systemctl restart datenschutz-tool</code></td><td>Service neu starten</td></tr>
+      <tr><td><code>sudo systemctl status datenschutz-tool</code></td><td>Status anzeigen</td></tr>
+      <tr><td><code>sudo journalctl -u datenschutz-tool -f</code></td><td>Live-Log anzeigen</td></tr>
+      <tr><td><code>sudo journalctl -u datenschutz-tool --since today</code></td><td>Heutiges Log</td></tr>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">9</span> Nginx Reverse Proxy (optional)</h2>
+
+  <div class="card">
+    <p>F&uuml;r den Zugriff &uuml;ber Port 80/443 mit eigenem Domainnamen:</p>
+
+    <pre><span class="comment"># Nginx installieren</span>
+<span class="cmd">sudo apt install -y nginx</span>
+
+<span class="comment"># Konfiguration erstellen</span>
+<span class="cmd">sudo nano /etc/nginx/sites-available/datenschutz-tool</span></pre>
+
+    <p>Konfigurationsinhalt:</p>
+
+    <pre>server {
+    listen 80;
+    server_name <span class="cmd">datenschutz.ihre-domain.de</span>;
+
+    location / {
+        proxy_pass http://127.0.0.1:3000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+    }
+}</pre>
+
+    <pre><span class="comment"># Seite aktivieren und Nginx neu laden</span>
+<span class="cmd">sudo ln -s /etc/nginx/sites-available/datenschutz-tool /etc/nginx/sites-enabled/</span>
+<span class="cmd">sudo nginx -t</span>
+<span class="cmd">sudo systemctl reload nginx</span>
+
+<span class="comment"># Optional: SSL-Zertifikat mit Let's Encrypt</span>
+<span class="cmd">sudo apt install -y certbot python3-certbot-nginx</span>
+<span class="cmd">sudo certbot --nginx -d datenschutz.ihre-domain.de</span></pre>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">10</span> Firewall konfigurieren</h2>
+
+  <div class="card">
+    <pre><span class="comment"># Falls UFW aktiv ist &ndash; Port freigeben</span>
+<span class="cmd">sudo ufw allow 80/tcp</span>
+<span class="cmd">sudo ufw allow 443/tcp</span>
+
+<span class="comment"># Oder direkt Port 3000 (ohne Nginx)</span>
+<span class="cmd">sudo ufw allow 3000/tcp</span>
+
+<span class="comment"># Status pr&uuml;fen</span>
+<span class="cmd">sudo ufw status</span></pre>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">11</span> Update durchf&uuml;hren</h2>
+
+  <div class="card">
+    <pre><span class="cmd">cd /opt/datenschutz-tool</span>
+
+<span class="comment"># Neueste Version holen</span>
+<span class="cmd">git pull</span>
+
+<span class="comment"># Abh&auml;ngigkeiten aktualisieren</span>
+<span class="cmd">npm install</span>
+
+<span class="comment"># Datenbank-Migrationen anwenden</span>
+<span class="cmd">npx prisma generate</span>
+<span class="cmd">npx prisma migrate deploy</span>
+
+<span class="comment"># Neu bauen und Service neu starten</span>
+<span class="cmd">npx next build</span>
+<span class="cmd">sudo systemctl restart datenschutz-tool</span></pre>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2><span class="num">12</span> Backup</h2>
+
+  <div class="card">
+    <p>Die gesamte Datenbank liegt in einer einzigen SQLite-Datei:</p>
+
+    <pre><span class="comment"># Datenbank sichern</span>
+<span class="cmd">cp /opt/datenschutz-tool/dev.db /opt/datenschutz-tool/backup_$(date +%Y%m%d).db</span>
+
+<span class="comment"># Oder als Cronjob (t&auml;glich um 2:00 Uhr)</span>
+<span class="cmd">sudo crontab -e</span>
+<span class="output"># Folgende Zeile hinzuf&uuml;gen:</span>
+0 2 * * * cp /opt/datenschutz-tool/dev.db /opt/backups/datenschutz_$(date +\%Y\%m\%d).db</pre>
+
+    <div class="warn-box">
+      <p><strong>Wichtig:</strong> Die Datei <code>dev.db</code> enth&auml;lt alle Unternehmensdaten, Verarbeitungsverzeichnisse und Datenlandkarten. Regelm&auml;&szlig;ige Backups sind dringend empfohlen!</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2>Fehlerbehebung</h2>
+
+  <div class="card">
+    <table>
+      <tr><th>Problem</th><th>L&ouml;sung</th></tr>
+      <tr>
+        <td>Port 3000 bereits belegt</td>
+        <td><code>sudo lsof -i :3000</code> &ndash; Prozess identifizieren und Port in <code>.env</code> &auml;ndern</td>
+      </tr>
+      <tr>
+        <td>Permission denied bei npm install</td>
+        <td><code>sudo chown -R $USER:$USER /opt/datenschutz-tool</code></td>
+      </tr>
+      <tr>
+        <td>Prisma-Fehler nach Update</td>
+        <td><code>npx prisma generate && npx prisma migrate deploy</code></td>
+      </tr>
+      <tr>
+        <td>Leere Seite im Browser</td>
+        <td>Build pr&uuml;fen: <code>npx next build</code> &ndash; auf Fehlermeldungen achten</td>
+      </tr>
+      <tr>
+        <td>Service startet nicht</td>
+        <td><code>sudo journalctl -u datenschutz-tool -n 50</code> f&uuml;r Fehlermeldungen</td>
+      </tr>
+      <tr>
+        <td>Umlaute fehlerhaft</td>
+        <td>Locale pr&uuml;fen: <code>locale</code> &ndash; sollte <code>UTF-8</code> enthalten</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════ -->
+  <h2>Schnellreferenz</h2>
+
+  <div class="card">
+    <table>
+      <tr><th>Aufgabe</th><th>Befehl</th></tr>
+      <tr><td>Entwicklungsserver</td><td><code>npm run dev</code></td></tr>
+      <tr><td>Produktions-Build</td><td><code>npm run build</code></td></tr>
+      <tr><td>Produktionsserver</td><td><code>npm start</code></td></tr>
+      <tr><td>Stammdaten laden</td><td><code>npm run seed</code></td></tr>
+      <tr><td>DB-Migration</td><td><code>npm run db:migrate</code></td></tr>
+      <tr><td>Prisma Studio (DB-Browser)</td><td><code>npx prisma studio</code></td></tr>
+      <tr><td>Service-Status</td><td><code>sudo systemctl status datenschutz-tool</code></td></tr>
+      <tr><td>Live-Log</td><td><code>sudo journalctl -u datenschutz-tool -f</code></td></tr>
+    </table>
+  </div>
+
+  <div class="footer">
+    Datenschutz-Tool &middot; DSGVO Compliance Manager &middot; Installationsanleitung Ubuntu
+  </div>
+
+</div>
+
+</body>
+</html>
