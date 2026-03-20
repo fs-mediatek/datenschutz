@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 interface DataMap {
   id: string;
@@ -16,6 +17,7 @@ interface DataMap {
 }
 
 export default function DatenlandkartePage() {
+  const router = useRouter();
   const [maps, setMaps] = useState<DataMap[]>([]);
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -82,32 +84,60 @@ export default function DatenlandkartePage() {
             Visualisieren Sie Ihre Datenflüsse und Verarbeitungstätigkeiten
           </p>
         </div>
-        <button
-          onClick={() => setShowCreateModal(true)}
-          className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors flex items-center gap-2"
-        >
-          <span className="text-lg">+</span>
-          Neue Datenlandkarte
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            onClick={() => router.push("/datenlandkarte/assistent")}
+            className="px-5 py-3 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-lg transition-all shadow-md hover:shadow-lg flex flex-col items-start"
+          >
+            <span className="flex items-center gap-2">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+              Gef&uuml;hrte Erstellung
+            </span>
+            <span className="text-xs font-normal opacity-80 mt-0.5">
+              Schritt f&uuml;r Schritt durch die Erstellung gef&uuml;hrt werden
+            </span>
+          </button>
+          <button
+            onClick={() => setShowCreateModal(true)}
+            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors flex items-center gap-2"
+          >
+            <span className="text-lg">+</span>
+            Neue Datenlandkarte
+          </button>
+        </div>
       </div>
 
       {loading ? (
         <div className="text-center py-12 text-slate-400">Laden...</div>
       ) : maps.length === 0 ? (
         <div className="text-center py-16 bg-white rounded-lg border border-slate-200">
-          <div className="text-4xl mb-3">🗺️</div>
+          <div className="text-4xl mb-3">&#x1F5FA;&#xFE0F;</div>
           <h3 className="text-lg font-medium text-slate-700 mb-1">
             Keine Datenlandkarten vorhanden
           </h3>
-          <p className="text-sm text-slate-500 mb-4">
-            Erstellen Sie Ihre erste Datenlandkarte, um Datenflüsse zu visualisieren.
+          <p className="text-sm text-slate-500 mb-6">
+            Erstellen Sie Ihre erste Datenlandkarte, um Datenfl&uuml;sse zu visualisieren.
           </p>
-          <button
-            onClick={() => setShowCreateModal(true)}
-            className="px-4 py-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors"
-          >
-            Erste Datenlandkarte erstellen
-          </button>
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+            <button
+              onClick={() => router.push("/datenlandkarte/assistent")}
+              className="px-6 py-3 text-sm font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 rounded-lg transition-all shadow-md hover:shadow-lg"
+            >
+              <span className="flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
+                Gef&uuml;hrte Erstellung starten
+              </span>
+              <span className="block text-xs font-normal opacity-80 mt-0.5">
+                Empfohlen &ndash; Schritt f&uuml;r Schritt Assistent
+              </span>
+            </button>
+            <button
+              onClick={() => setShowCreateModal(true)}
+              className="px-4 py-2 text-sm font-medium text-slate-600 border border-slate-300 hover:bg-slate-50 rounded-lg transition-colors"
+            >
+              Leere Datenlandkarte erstellen
+            </button>
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
