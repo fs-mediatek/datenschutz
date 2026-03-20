@@ -1,0 +1,219 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// === STAMMDATEN (Master Data) ===
+
+model Company {
+  id          String   @id @default(uuid())
+  name        String
+  street      String?
+  zip         String?
+  city        String?
+  country     String   @default("Deutschland")
+  phone       String?
+  email       String?
+  website     String?
+  logoPath    String?
+  dsbName     String?  // Datenschutzbeauftragter
+  dsbEmail    String?
+  dsbPhone    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  processesAsResponsible  Process[]           @relation("ResponsibleCompany")
+  processesAsProcessor    Process[]           @relation("ProcessorCompany")
+  recipientEntries        Recipient[]
+  processorEntries        DataProcessor[]
+}
+
+model DataCategory {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  isSensitive Boolean  @default(false) // Art. 9 DSGVO
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  processCategories ProcessDataCategory[]
+}
+
+model LegalBasis {
+  id          String   @id @default(uuid())
+  article     String   // e.g. "Art. 6 Abs. 1 lit. b DSGVO"
+  description String
+  createdAt   DateTime @default(now())
+
+  processes ProcessLegalBasis[]
+}
+
+model AffectedGroup {
+  id          String   @id @default(uuid())
+  name        String   // e.g. "Beschäftigte", "Bewerber", "Kunden"
+  description String?
+  createdAt   DateTime @default(now())
+
+  processGroups ProcessAffectedGroup[]
+}
+
+model TechnicalMeasure {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  category    String?  // e.g. "Zutrittskontrolle", "Zugangskontrolle", "Verschlüsselung"
+  createdAt   DateTime @default(now())
+
+  processMeasures ProcessTechnicalMeasure[]
+}
+
+// === DATENLANDKARTE (Data Map) ===
+
+model DataMap {
+  id          String   @id @default(uuid())
+  name        String
+  description String?
+  companyId   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  nodes       MapNode[]
+  edges       MapEdge[]
+}
+
+model MapNode {
+  id          String   @id @default(uuid())
+  dataMapId   String
+  dataMap     DataMap  @relation(fields: [dataMapId], references: [id], onDelete: Cascade)
+  processId   String?
+  process     Process? @relation(fields: [processId], references: [id])
+  label       String
+  type        String   // "process", "system", "person", "external", "datasource", "archive"
+  positionX   Float    @default(0)
+  positionY   Float    @default(0)
+  color       String?
+  metadata    String?  // JSON string for extra data
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  edgesFrom   MapEdge[] @relation("EdgeFrom")
+  edgesTo     MapEdge[] @relation("EdgeTo")
+}
+
+model MapEdge {
+  id          String   @id @default(uuid())
+  dataMapId   String
+  dataMap     DataMap  @relation(fields: [dataMapId], references: [id], onDelete: Cascade)
+  fromNodeId  String
+  fromNode    MapNode  @relation("EdgeFrom", fields: [fromNodeId], references: [id], onDelete: Cascade)
+  toNodeId    String
+  toNode      MapNode  @relation("EdgeTo", fields: [toNodeId], references: [id], onDelete: Cascade)
+  label       String?  // e.g. "Bewerbungsdaten", "Gehaltsdaten"
+  dataType    String?  // what kind of data flows
+  transferType String? // "digital", "physisch", "API"
+  createdAt   DateTime @default(now())
+}
+
+// === VERARBEITUNGSVERZEICHNIS (VVT) ===
+
+model Process {
+  id                String   @id @default(uuid())
+  number            Int?
+  name              String   // Bezeichnung der Verarbeitungstätigkeit
+  description       String?
+  purpose           String?  // Zweck der Verarbeitung
+  responsibleId     String?
+  responsible       Company? @relation("ResponsibleCompany", fields: [responsibleId], references: [id])
+  processorId       String?
+  processor         Company? @relation("ProcessorCompany", fields: [processorId], references: [id])
+  deletionConcept   String?  // Löschkonzept / Löschfristen
+  thirdCountry      String?  // Drittlandübermittlung
+  thirdCountryGuarantee String? // Garantien
+  riskAssessment    String?  // Risikobewertung
+  dsfaRequired      Boolean  @default(false) // DSFA erforderlich?
+  status            String   @default("draft") // draft, active, archived
+  lastReviewDate    DateTime?
+  nextReviewDate    DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  // Relations
+  dataCategories    ProcessDataCategory[]
+  legalBases        ProcessLegalBasis[]
+  affectedGroups    ProcessAffectedGroup[]
+  technicalMeasures ProcessTechnicalMeasure[]
+  recipients        Recipient[]
+  processors        DataProcessor[]
+  mapNodes          MapNode[]
+}
+
+// === JOIN TABLES ===
+
+model ProcessDataCategory {
+  id             String       @id @default(uuid())
+  processId      String
+  process        Process      @relation(fields: [processId], references: [id], onDelete: Cascade)
+  dataCategoryId String
+  dataCategory   DataCategory @relation(fields: [dataCategoryId], references: [id], onDelete: Cascade)
+  deletionPeriod String?      // Specific deletion period for this category in this process
+
+  @@unique([processId, dataCategoryId])
+}
+
+model ProcessLegalBasis {
+  id           String     @id @default(uuid())
+  processId    String
+  process      Process    @relation(fields: [processId], references: [id], onDelete: Cascade)
+  legalBasisId String
+  legalBasis   LegalBasis @relation(fields: [legalBasisId], references: [id], onDelete: Cascade)
+
+  @@unique([processId, legalBasisId])
+}
+
+model ProcessAffectedGroup {
+  id              String        @id @default(uuid())
+  processId       String
+  process         Process       @relation(fields: [processId], references: [id], onDelete: Cascade)
+  affectedGroupId String
+  affectedGroup   AffectedGroup @relation(fields: [affectedGroupId], references: [id], onDelete: Cascade)
+
+  @@unique([processId, affectedGroupId])
+}
+
+model ProcessTechnicalMeasure {
+  id                 String           @id @default(uuid())
+  processId          String
+  process            Process          @relation(fields: [processId], references: [id], onDelete: Cascade)
+  technicalMeasureId String
+  technicalMeasure   TechnicalMeasure @relation(fields: [technicalMeasureId], references: [id], onDelete: Cascade)
+  status             String           @default("vorhanden") // vorhanden, geplant, ausstehend
+
+  @@unique([processId, technicalMeasureId])
+}
+
+model Recipient {
+  id        String   @id @default(uuid())
+  processId String
+  process   Process  @relation(fields: [processId], references: [id], onDelete: Cascade)
+  companyId String?
+  company   Company? @relation(fields: [companyId], references: [id])
+  name      String
+  category  String?  // "intern", "extern", "auftragsverarbeiter"
+  purpose   String?
+}
+
+model DataProcessor {
+  id          String   @id @default(uuid())
+  processId   String
+  process     Process  @relation(fields: [processId], references: [id], onDelete: Cascade)
+  companyId   String?
+  company     Company? @relation(fields: [companyId], references: [id])
+  name        String
+  avvDate     String?  // Datum des AVV
+  description String?
+}
