@@ -81,10 +81,10 @@ const DATA_SOURCE_OPTIONS = [
   { id: "email", label: "E-Mail-Postfach", icon: "\uD83D\uDCE7" },
   { id: "website", label: "Website / Online-Formular", icon: "\uD83C\uDF10" },
   { id: "mail", label: "Postalischer Eingang", icon: "\uD83D\uDCEC" },
-  { id: "phone", label: "Telefon / Gespr\u00E4chsnotizen", icon: "\uD83D\uDCDE" },
-  { id: "inperson", label: "Pers\u00F6nlicher Kontakt / Vor-Ort", icon: "\uD83E\uDD1D" },
+  { id: "phone", label: "Telefon / Gesprächsnotizen", icon: "\uD83D\uDCDE" },
+  { id: "inperson", label: "Persönlicher Kontakt / Vor-Ort", icon: "\uD83E\uDD1D" },
   { id: "api", label: "API-Schnittstelle", icon: "\uD83D\uDD0C" },
-  { id: "external_db", label: "Externe Datenbank / Beh\u00F6rde", icon: "\uD83C\uDFDB\uFE0F" },
+  { id: "external_db", label: "Externe Datenbank / Behörde", icon: "\uD83C\uDFDB\uFE0F" },
   { id: "jobportal", label: "Bewerbungsportal", icon: "\uD83D\uDCBC" },
   { id: "internal_system", label: "Internes System", icon: "\uD83D\uDCBB" },
 ];
@@ -114,7 +114,7 @@ const SYSTEM_OPTIONS = [
 
 const RECIPIENT_OPTIONS = [
   { id: "hr_dept", label: "Personalabteilung", icon: "\uD83D\uDC65" },
-  { id: "management", label: "Gesch\u00E4ftsf\u00FChrung", icon: "\uD83D\uDC54" },
+  { id: "management", label: "Geschäftsführung", icon: "\uD83D\uDC54" },
   { id: "department", label: "Fachabteilung", icon: "\uD83D\uDD27" },
   { id: "it", label: "IT-Abteilung", icon: "\uD83D\uDCBB" },
   { id: "finance", label: "Buchhaltung / Finanzen", icon: "\uD83D\uDCB6" },
@@ -125,7 +125,7 @@ const RECIPIENT_OPTIONS = [
 
 const AUTHORITY_OPTIONS = [
   { name: "Finanzamt", custom: false },
-  { name: "Sozialversicherungstr\u00E4ger", custom: false },
+  { name: "Sozialversicherungsträger", custom: false },
   { name: "Arbeitsagentur", custom: false },
 ];
 
@@ -150,9 +150,9 @@ const STEPS = [
   "Grundlagen",
   "Datenquellen",
   "Systeme",
-  "Interne Empf\u00E4nger",
-  "Externe Empf\u00E4nger",
-  "L\u00F6schung",
+  "Interne Empfänger",
+  "Externe Empfänger",
+  "Löschung",
   "Zusammenfassung",
 ];
 
@@ -552,7 +552,7 @@ export default function DatenlandkarteAssistentPage() {
           rec.accessLevel === "full"
             ? "Vollzugriff"
             : rec.accessLevel === "limited"
-            ? "Eingeschr\u00E4nkt"
+            ? "Eingeschränkt"
             : "Nur Lesen";
         const res = await fetch(`/api/data-maps/${mapId}/nodes`, {
           method: "POST",
@@ -604,7 +604,7 @@ export default function DatenlandkarteAssistentPage() {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              label: `${auth.name}\n(Beh\u00F6rde)`,
+              label: `${auth.name}\n(Behörde)`,
               type: "external",
               positionX: 750,
               positionY: extStartY + (authStartIdx + i) * spacing,
@@ -643,11 +643,11 @@ export default function DatenlandkarteAssistentPage() {
       // Archive / deletion node (col 4)
       const archiveLabels: string[] = [];
       if (state.deletionMethods.includes("digital_deletion"))
-        archiveLabels.push("Digitale L\u00F6schung");
+        archiveLabels.push("Digitale Löschung");
       if (state.deletionMethods.includes("physical_destruction"))
         archiveLabels.push("Aktenvernichtung");
       if (state.deletionMethods.includes("transfer"))
-        archiveLabels.push(`\u00DCberf\u00FChrung: ${state.archiveTransferSystem || "?"}`);
+        archiveLabels.push(`Überführung: ${state.archiveTransferSystem || "?"}`);
       if (state.deletionMethods.includes("archive"))
         archiveLabels.push(`Archivierung (${state.archiveDuration || "?"})`);
       if (state.deletionMethods.includes("anonymization"))
@@ -759,7 +759,7 @@ export default function DatenlandkarteAssistentPage() {
                 fromNodeId: firstSystemId,
                 toNodeId: toId,
                 label: "Meldepflicht",
-                transferType: "Beh\u00F6rde",
+                transferType: "Behörde",
               }),
             });
           }
@@ -794,7 +794,7 @@ export default function DatenlandkarteAssistentPage() {
             body: JSON.stringify({
               fromNodeId: processNodeId,
               toNodeId: archiveNodeId,
-              label: "L\u00F6schung / Archivierung",
+              label: "Löschung / Archivierung",
               transferType: "Intern",
             }),
           });
@@ -910,18 +910,18 @@ export default function DatenlandkarteAssistentPage() {
       </h2>
       <p className="text-sm text-slate-500 mb-6">
         Beginnen Sie mit den grundlegenden Informationen zu dem Prozess, den Sie
-        kartieren m\u00F6chten.
+        kartieren möchten.
       </p>
 
       <InfoBox>
         <strong>Beispiele:</strong> Bewerbermanagement, Kundenbetreuung,
-        Lohnabrechnung, Websitebetrieb, Video\u00FCberwachung
+        Lohnabrechnung, Websitebetrieb, Videoüberwachung
       </InfoBox>
 
       <div className="space-y-5">
         <div>
           <label className="block text-sm font-medium text-slate-700 mb-1">
-            Welchen Prozess m\u00F6chten Sie kartieren? *
+            Welchen Prozess möchten Sie kartieren? *
           </label>
           <input
             type="text"
@@ -953,7 +953,7 @@ export default function DatenlandkarteAssistentPage() {
             onChange={(e) => update({ companyId: e.target.value })}
             className="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option value="">Sp\u00E4ter zuweisen</option>
+            <option value="">Später zuweisen</option>
             {companies.map((c) => (
               <option key={c.id} value={c.id}>
                 {c.name}
@@ -971,13 +971,13 @@ export default function DatenlandkarteAssistentPage() {
         Datenquellen &ndash; Woher kommen die Daten?
       </h2>
       <p className="text-sm text-slate-500 mb-6">
-        \u00DCber welche Kan\u00E4le gelangen personenbezogene Daten in Ihren Prozess?
+        Über welche Kanäle gelangen personenbezogene Daten in Ihren Prozess?
       </p>
 
       <InfoBox>
-        W\u00E4hlen Sie alle Kan\u00E4le aus, \u00FCber die personenbezogene Daten in den
-        Prozess &ldquo;{state.processName}&rdquo; gelangen. Sie k\u00F6nnen auch eigene
-        Quellen hinzuf\u00FCgen.
+        Wählen Sie alle Kanäle aus, über die personenbezogene Daten in den
+        Prozess &ldquo;{state.processName}&rdquo; gelangen. Sie können auch eigene
+        Quellen hinzufügen.
       </InfoBox>
 
       <CardGrid
@@ -992,7 +992,7 @@ export default function DatenlandkarteAssistentPage() {
           type="text"
           value={customSourceLabel}
           onChange={(e) => setCustomSourceLabel(e.target.value)}
-          placeholder="Weitere Quelle hinzuf\u00FCgen..."
+          placeholder="Weitere Quelle hinzufügen..."
           className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           onKeyDown={(e) => {
             if (e.key === "Enter") addCustomSource();
@@ -1004,7 +1004,7 @@ export default function DatenlandkarteAssistentPage() {
           disabled={!customSourceLabel.trim()}
           className="px-4 py-2 text-sm font-medium text-blue-600 border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          + Hinzuf\u00FCgen
+          + Hinzufügen
         </button>
       </div>
 
@@ -1012,7 +1012,7 @@ export default function DatenlandkarteAssistentPage() {
       {state.dataSources.length > 0 && (
         <div className="space-y-4">
           <h3 className="text-sm font-semibold text-slate-700">
-            Welche Daten werden \u00FCber die ausgew\u00E4hlten Kan\u00E4le erfasst?
+            Welche Daten werden über die ausgewählten Kanäle erfasst?
           </h3>
           {state.dataSources.map((src) => (
             <div
@@ -1092,8 +1092,8 @@ export default function DatenlandkarteAssistentPage() {
       </p>
 
       <InfoBox>
-        W\u00E4hlen Sie alle Systeme, in denen die Daten Ihres Prozesses verarbeitet
-        oder gespeichert werden. Sie k\u00F6nnen optional den Produktnamen angeben.
+        Wählen Sie alle Systeme, in denen die Daten Ihres Prozesses verarbeitet
+        oder gespeichert werden. Sie können optional den Produktnamen angeben.
       </InfoBox>
 
       <CardGrid
@@ -1107,7 +1107,7 @@ export default function DatenlandkarteAssistentPage() {
           type="text"
           value={customSystemLabel}
           onChange={(e) => setCustomSystemLabel(e.target.value)}
-          placeholder="Weiteres System hinzuf\u00FCgen..."
+          placeholder="Weiteres System hinzufügen..."
           className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           onKeyDown={(e) => {
             if (e.key === "Enter") addCustomSystem();
@@ -1119,7 +1119,7 @@ export default function DatenlandkarteAssistentPage() {
           disabled={!customSystemLabel.trim()}
           className="px-4 py-2 text-sm font-medium text-blue-600 border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          + Hinzuf\u00FCgen
+          + Hinzufügen
         </button>
       </div>
 
@@ -1154,15 +1154,15 @@ export default function DatenlandkarteAssistentPage() {
   const renderStep3 = () => (
     <div>
       <h2 className="text-xl font-bold text-slate-800 mb-1">
-        Interne Empf\u00E4nger &ndash; Wer hat Zugriff?
+        Interne Empfänger &ndash; Wer hat Zugriff?
       </h2>
       <p className="text-sm text-slate-500 mb-6">
         Welche Abteilungen oder Personen haben Zugriff auf die Daten?
       </p>
 
       <InfoBox>
-        W\u00E4hlen Sie alle internen Stellen aus, die auf die Daten zugreifen k\u00F6nnen.
-        Geben Sie f\u00FCr jede Stelle die Zugriffsrechte an.
+        Wählen Sie alle internen Stellen aus, die auf die Daten zugreifen können.
+        Geben Sie für jede Stelle die Zugriffsrechte an.
       </InfoBox>
 
       <CardGrid
@@ -1176,7 +1176,7 @@ export default function DatenlandkarteAssistentPage() {
           type="text"
           value={customRecipientLabel}
           onChange={(e) => setCustomRecipientLabel(e.target.value)}
-          placeholder="Weitere Abteilung / Person hinzuf\u00FCgen..."
+          placeholder="Weitere Abteilung / Person hinzufügen..."
           className="flex-1 px-3 py-2 border border-slate-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           onKeyDown={(e) => {
             if (e.key === "Enter") addCustomRecipient();
@@ -1188,7 +1188,7 @@ export default function DatenlandkarteAssistentPage() {
           disabled={!customRecipientLabel.trim()}
           className="px-4 py-2 text-sm font-medium text-blue-600 border border-blue-300 rounded-lg hover:bg-blue-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          + Hinzuf\u00FCgen
+          + Hinzufügen
         </button>
       </div>
 
@@ -1210,7 +1210,7 @@ export default function DatenlandkarteAssistentPage() {
                 {(
                   [
                     { value: "full", label: "Vollzugriff" },
-                    { value: "limited", label: "Eingeschr\u00E4nkt" },
+                    { value: "limited", label: "Eingeschränkt" },
                     { value: "readonly", label: "Nur Lesen" },
                   ] as const
                 ).map((opt) => (
@@ -1238,16 +1238,16 @@ export default function DatenlandkarteAssistentPage() {
   const renderStep4 = () => (
     <div>
       <h2 className="text-xl font-bold text-slate-800 mb-1">
-        Externe Empf\u00E4nger &amp; Auftragsverarbeiter
+        Externe Empfänger &amp; Auftragsverarbeiter
       </h2>
       <p className="text-sm text-slate-500 mb-6">
         Werden Daten an externe Stellen weitergegeben?
       </p>
 
       <InfoBox>
-        Geben Sie an, ob und an wen personenbezogene Daten au\u00DFerhalb Ihres
-        Unternehmens weitergegeben werden. Ber\u00FCcksichtigen Sie Dienstleister,
-        Beh\u00F6rden und Drittl\u00E4nder.
+        Geben Sie an, ob und an wen personenbezogene Daten außerhalb Ihres
+        Unternehmens weitergegeben werden. Berücksichtigen Sie Dienstleister,
+        Behörden und Drittländer.
       </InfoBox>
 
       {/* External service providers */}
@@ -1339,7 +1339,7 @@ export default function DatenlandkarteAssistentPage() {
               onClick={addExternalRecipient}
               className="text-sm text-blue-600 hover:text-blue-800 font-medium"
             >
-              + Weiteren Dienstleister hinzuf\u00FCgen
+              + Weiteren Dienstleister hinzufügen
             </button>
           </div>
         )}
@@ -1349,7 +1349,7 @@ export default function DatenlandkarteAssistentPage() {
       <div className="bg-white border border-slate-200 rounded-lg p-5 mb-4">
         <div className="flex items-center justify-between mb-4">
           <span className="text-sm font-medium text-slate-700">
-            Werden Daten an Beh\u00F6rden oder \u00F6ffentliche Stellen \u00FCbermittelt?
+            Werden Daten an Behörden oder öffentliche Stellen übermittelt?
           </span>
           <div className="flex gap-2">
             <button
@@ -1406,7 +1406,7 @@ export default function DatenlandkarteAssistentPage() {
                 type="text"
                 value={customAuthorityName}
                 onChange={(e) => setCustomAuthorityName(e.target.value)}
-                placeholder="Sonstige Beh\u00F6rde..."
+                placeholder="Sonstige Behörde..."
                 className="flex-1 px-3 py-1.5 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-400"
                 onKeyDown={(e) => {
                   if (e.key === "Enter") addCustomAuthority();
@@ -1429,7 +1429,7 @@ export default function DatenlandkarteAssistentPage() {
       <div className="bg-white border border-slate-200 rounded-lg p-5">
         <div className="flex items-center justify-between mb-4">
           <span className="text-sm font-medium text-slate-700">
-            Werden Daten in Drittl\u00E4nder (au\u00DFerhalb EU/EWR) \u00FCbermittelt?
+            Werden Daten in Drittländer (außerhalb EU/EWR) übermittelt?
           </span>
           <div className="flex gap-2">
             <button
@@ -1501,7 +1501,7 @@ export default function DatenlandkarteAssistentPage() {
                   }
                   className="w-full px-3 py-1.5 border border-slate-200 rounded-md text-sm focus:outline-none focus:ring-1 focus:ring-blue-400"
                 >
-                  <option value="">Garantie ausw\u00E4hlen...</option>
+                  <option value="">Garantie auswählen...</option>
                   {GUARANTEE_OPTIONS.map((g) => (
                     <option key={g} value={g}>
                       {g}
@@ -1515,7 +1515,7 @@ export default function DatenlandkarteAssistentPage() {
               onClick={addThirdCountryTransfer}
               className="text-sm text-blue-600 hover:text-blue-800 font-medium"
             >
-              + Weiteres Drittland hinzuf\u00FCgen
+              + Weiteres Drittland hinzufügen
             </button>
           </div>
         )}
@@ -1526,7 +1526,7 @@ export default function DatenlandkarteAssistentPage() {
   const renderStep5 = () => (
     <div>
       <h2 className="text-xl font-bold text-slate-800 mb-1">
-        L\u00F6schung &amp; Archivierung
+        Löschung &amp; Archivierung
       </h2>
       <p className="text-sm text-slate-500 mb-6">
         Was passiert mit den Daten am Ende des Prozesses?
@@ -1534,14 +1534,14 @@ export default function DatenlandkarteAssistentPage() {
 
       <InfoBox>
         Legen Sie fest, wie die Daten nach Abschluss des Prozesses behandelt
-        werden. Mehrfachauswahl ist m\u00F6glich.
+        werden. Mehrfachauswahl ist möglich.
       </InfoBox>
 
       <div className="space-y-3 mb-6">
         {[
-          { id: "digital_deletion", label: "Digitale L\u00F6schung nach Fristablauf" },
+          { id: "digital_deletion", label: "Digitale Löschung nach Fristablauf" },
           { id: "physical_destruction", label: "Aktenvernichtung (physisch)" },
-          { id: "transfer", label: "\u00DCberf\u00FChrung in anderes System" },
+          { id: "transfer", label: "Überführung in anderes System" },
           { id: "archive", label: "Archivierung" },
           { id: "anonymization", label: "Anonymisierung" },
         ].map((method) => (
@@ -1604,7 +1604,7 @@ export default function DatenlandkarteAssistentPage() {
 
       <div className="bg-white border border-slate-200 rounded-lg p-4">
         <span className="text-sm font-medium text-slate-700 block mb-3">
-          Gibt es ein dokumentiertes L\u00F6schkonzept?
+          Gibt es ein dokumentiertes Löschkonzept?
         </span>
         <div className="flex gap-3">
           {[
@@ -1641,7 +1641,7 @@ export default function DatenlandkarteAssistentPage() {
           Zusammenfassung &amp; Generierung
         </h2>
         <p className="text-sm text-slate-500 mb-6">
-          \u00DCberpr\u00FCfen Sie Ihre Angaben und generieren Sie die Datenlandkarte.
+          Überprüfen Sie Ihre Angaben und generieren Sie die Datenlandkarte.
         </p>
 
         {/* Visual flow summary */}
@@ -1658,19 +1658,19 @@ export default function DatenlandkarteAssistentPage() {
             </div>
             <span className="text-slate-400 text-lg">&rarr;</span>
             <div className="bg-orange-100 text-orange-700 px-4 py-2 rounded-lg font-semibold border border-orange-200">
-              {state.internalRecipients.length} interne Empf\u00E4nger
+              {state.internalRecipients.length} interne Empfänger
             </div>
             {extCount > 0 && (
               <>
                 <span className="text-slate-400 text-lg">&rarr;</span>
                 <div className="bg-red-100 text-red-700 px-4 py-2 rounded-lg font-semibold border border-red-200">
-                  {extCount} externe Empf\u00E4nger
+                  {extCount} externe Empfänger
                 </div>
               </>
             )}
             <span className="text-slate-400 text-lg">&rarr;</span>
             <div className="bg-gray-100 text-gray-700 px-4 py-2 rounded-lg font-semibold border border-gray-300">
-              L\u00F6schung / Archiv
+              Löschung / Archiv
             </div>
           </div>
         </div>
@@ -1696,7 +1696,7 @@ export default function DatenlandkarteAssistentPage() {
                 {state.companyId
                   ? companies.find((c) => c.id === state.companyId)?.name ||
                     "Unbekannt"
-                  : "Sp\u00E4ter zuweisen"}
+                  : "Später zuweisen"}
               </p>
             </div>
           </div>
@@ -1746,7 +1746,7 @@ export default function DatenlandkarteAssistentPage() {
           {/* Recipients */}
           <div className="bg-white border border-slate-200 rounded-lg p-4">
             <h3 className="text-sm font-semibold text-slate-700 mb-2">
-              Interne Empf\u00E4nger
+              Interne Empfänger
             </h3>
             <div className="flex flex-wrap gap-2">
               {state.internalRecipients.map((rec) => (
@@ -1760,7 +1760,7 @@ export default function DatenlandkarteAssistentPage() {
                     {rec.accessLevel === "full"
                       ? "Vollzugriff"
                       : rec.accessLevel === "limited"
-                      ? "Eingeschr\u00E4nkt"
+                      ? "Eingeschränkt"
                       : "Nur Lesen"}
                     )
                   </span>
@@ -1773,7 +1773,7 @@ export default function DatenlandkarteAssistentPage() {
           {extCount > 0 && (
             <div className="bg-white border border-slate-200 rounded-lg p-4">
               <h3 className="text-sm font-semibold text-slate-700 mb-2">
-                Externe Empf\u00E4nger
+                Externe Empfänger
               </h3>
               <div className="text-sm text-slate-600 space-y-1">
                 {state.externalRecipients.map((ext, i) => (
@@ -1789,7 +1789,7 @@ export default function DatenlandkarteAssistentPage() {
                 {state.authorities.map((auth, i) => (
                   <p key={`auth_${i}`}>
                     {auth.name}{" "}
-                    <span className="text-slate-400">(Beh\u00F6rde)</span>
+                    <span className="text-slate-400">(Behörde)</span>
                   </p>
                 ))}
                 {state.thirdCountryTransfers.map((tc, i) => (
@@ -1805,7 +1805,7 @@ export default function DatenlandkarteAssistentPage() {
           {/* Deletion */}
           <div className="bg-white border border-slate-200 rounded-lg p-4">
             <h3 className="text-sm font-semibold text-slate-700 mb-2">
-              L\u00F6schung &amp; Archivierung
+              Löschung &amp; Archivierung
             </h3>
             <div className="text-sm text-slate-600 space-y-1">
               {state.deletionMethods.length === 0 ? (
@@ -1813,14 +1813,14 @@ export default function DatenlandkarteAssistentPage() {
               ) : (
                 <>
                   {state.deletionMethods.includes("digital_deletion") && (
-                    <p>Digitale L\u00F6schung nach Fristablauf</p>
+                    <p>Digitale Löschung nach Fristablauf</p>
                   )}
                   {state.deletionMethods.includes("physical_destruction") && (
                     <p>Aktenvernichtung (physisch)</p>
                   )}
                   {state.deletionMethods.includes("transfer") && (
                     <p>
-                      {"\u00DCberf\u00FChrung in: "}{state.archiveTransferSystem || "?"}
+                      {"Überführung in: "}{state.archiveTransferSystem || "?"}
                     </p>
                   )}
                   {state.deletionMethods.includes("archive") && (
@@ -1834,7 +1834,7 @@ export default function DatenlandkarteAssistentPage() {
                 </>
               )}
               <p>
-                <strong>L\u00F6schkonzept:</strong>{" "}
+                <strong>Löschkonzept:</strong>{" "}
                 {state.hasDeletionConcept === true
                   ? "Ja"
                   : state.hasDeletionConcept === false
@@ -1911,13 +1911,13 @@ export default function DatenlandkarteAssistentPage() {
           onClick={() => router.push("/datenlandkarte")}
           className="text-sm text-slate-500 hover:text-slate-700 flex items-center gap-1 mb-4"
         >
-          &larr; Zur\u00FCck zur \u00DCbersicht
+          &larr; Zurück zur Übersicht
         </button>
         <h1 className="text-2xl font-bold text-slate-800">
           Datenlandkarte-Assistent
         </h1>
         <p className="text-sm text-slate-500 mt-1">
-          Schritt f\u00FCr Schritt zur fertigen Datenlandkarte
+          Schritt für Schritt zur fertigen Datenlandkarte
         </p>
       </div>
 
@@ -1935,7 +1935,7 @@ export default function DatenlandkarteAssistentPage() {
           disabled={step === 0}
           className="px-5 py-2.5 text-sm font-medium text-slate-600 bg-white border border-slate-300 rounded-lg hover:bg-slate-50 transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
         >
-          &larr; Zur\u00FCck
+          &larr; Zurück
         </button>
 
         <span className="text-sm text-slate-400">
